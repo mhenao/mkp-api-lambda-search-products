@@ -1,2 +1,2 @@
-# mkp-api-lambda-search-products
-mkp-api-lambda-search-products
+# api-lambda-list-products
+list products 
