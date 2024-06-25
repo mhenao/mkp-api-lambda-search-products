@@ -16,6 +16,7 @@ export const handler = async (event: any, context: any) => {
   };
   
   logger.log(JSON.stringify(event));
+  console.log('eventParams', event)
   const dbServerless = new DbServerless(console, context);
 
   try {
@@ -37,3 +38,28 @@ export const handler = async (event: any, context: any) => {
 };
 
 
+/*const event = {
+  body: '{\r\n' +
+  '    "fields": [\r\n' +
+  '        "stock_quantity",\r\n' +
+  '        "name"\r\n' +
+  '    ],\r\n' +
+  '    "filters": {\r\n' +
+  '        "stock_quantity": 100,\r\n' +
+  '        "security_stock_quantity": 10\r\n' +
+  '    }\r\n' +
+  '}',
+};
+const context = {
+    databaseCredentials: {
+          host: config.host,
+          database: config.database,
+          username: config.user,
+          password: config.password,
+        },
+};
+
+handler(event, context).then((response) => {
+  console.log(response);
+});
+*/
