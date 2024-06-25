@@ -1,30 +1,33 @@
 
 import DbServerless from './database/dbServerless';
 import config from './config';
+import { searchProductsBy } from './domain/searchProducts';
+import { LoggerService } from './common/logger/logger.service';
 
-
+const logger = new LoggerService();
 
 export const handler = async (event: any, context: any) => {
   
   context.databaseCredentials = {
-    host: config.host,
-    database: config.database,
-    username: config.user,
-    password: config.password,
+    host: config.host.trim(),
+    database: config.database.trim(),
+    username: config.user.trim(),
+    password: config.password.trim(),
   };
   
+  logger.log(JSON.stringify(event));
   const dbServerless = new DbServerless(console, context);
 
   try {
-    const rows = await dbServerless.execQuery('SELECT * FROM products');
-    console.info(`Query successful, retrieved ${rows.length} rows`);
+    const rows = await searchProductsBy(dbServerless, event);
 
     return {
-      statusCode: 200,
-      body: JSON.stringify(rows),
+      statusCode: rows?.statusCode,
+      body: rows?.body,
     };
+    
   } catch (error) {
-    console.error(`Error querying database: ${error}`);
+    logger.error(`Error querying database: ${error}`);
 
     return {
       statusCode: 500,
@@ -34,20 +37,3 @@ export const handler = async (event: any, context: any) => {
 };
 
 
-
-/*const event = {
-	  body: JSON.stringify({}),
-};
-const context = {
-    databaseCredentials: {
-          host: config.host,
-          database: config.database,
-          username: config.user,
-          password: config.password,
-        },
-};
-
-handler(event, context).then((response) => {
-  console.log(response);
-});
-*/

@@ -10,7 +10,7 @@ export class LoggerService {
     this.logger = Winston.createLogger({
       format: combine(timestamp(), Winston.format.json()),
       transports: [new Winston.transports.Console()],
-      level: config.dssLogLevel,
+      level: config.logLevel,
     });
   }
 
