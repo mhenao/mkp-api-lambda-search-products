@@ -36,4 +36,21 @@ export const handler = async (event: any, context: any) => {
   }
 };
 
+/*const event = {
+  queryStringParameters: {
+    stock_quantity: 100,
+    security_stock_quantity: 10,
+  },
+};
+const context = {
+    databaseCredentials: {
+          host: config.host,
+          database: config.database,
+          username: config.user,
+          password: config.password,
+        },
+};
 
+handler(event, context).then((response) => {
+  console.log(response);
+});*/
