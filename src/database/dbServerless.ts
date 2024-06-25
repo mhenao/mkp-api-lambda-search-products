@@ -1,5 +1,6 @@
 import { LoggerService } from '../common/logger/logger.service';
 import ServerlessManagerMysql from "serverless-manager-mysql";
+import { Context } from '../interfaces'
 import config from '../config';
 
 class DbServerless {
@@ -9,7 +10,8 @@ class DbServerless {
   BD_PASS = config.password;
   logger: LoggerService;
 
-  constructor(logger: any, context: any) {
+  constructor(logger: LoggerService, context: Context) {
+    
     const {
       databaseCredentials: { host, database, username, password },
     } = context;

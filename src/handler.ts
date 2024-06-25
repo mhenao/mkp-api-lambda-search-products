@@ -1,4 +1,5 @@
-
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { Context } from './interfaces';
 import DbServerless from './database/dbServerless';
 import config from './config';
 import { searchProductsBy } from './domain/searchProducts';
@@ -6,7 +7,7 @@ import { LoggerService } from './common/logger/logger.service';
 
 const logger = new LoggerService();
 
-export const handler = async (event: any, context: any) => {
+export const handler = async (event: any, context: Context): Promise<APIGatewayProxyResult> => {
   
   context.databaseCredentials = {
     host: config.host.trim(),
@@ -16,11 +17,11 @@ export const handler = async (event: any, context: any) => {
   };
   
   logger.log(JSON.stringify(event));
-  console.log('eventParams', event)
-  const dbServerless = new DbServerless(console, context);
+  
+  const dbServerless = new DbServerless(logger, context);
 
   try {
-    const rows = await searchProductsBy(dbServerless, event);
+    const rows = await searchProductsBy(dbServerless, event?.body);
 
     return {
       statusCode: rows?.statusCode,
@@ -38,7 +39,7 @@ export const handler = async (event: any, context: any) => {
 };
 
 
-/*const event = {
+const event = {
   body: '{\r\n' +
   '    "fields": [\r\n' +
   '        "stock_quantity",\r\n' +
@@ -49,7 +50,7 @@ export const handler = async (event: any, context: any) => {
   '        "security_stock_quantity": 10\r\n' +
   '    }\r\n' +
   '}',
-};
+} as APIGatewayProxyEvent;
 const context = {
     databaseCredentials: {
           host: config.host,
@@ -62,4 +63,3 @@ const context = {
 handler(event, context).then((response) => {
   console.log(response);
 });
-*/

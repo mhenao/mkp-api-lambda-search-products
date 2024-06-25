@@ -1,11 +1,12 @@
 import { LoggerService } from "../common/logger/logger.service";
+import { DbServerless,APIGatewayProxyEvent } from '../interfaces/'
 
 const logger = new LoggerService();
 
-export const searchProductsBy = async (dbServerless: any, req: any) => {
+export const searchProductsBy = async (dbServerless: DbServerless, body: string) => {
   try {
     
-    const { fields, filters } = JSON.parse(req.body);
+    const { fields, filters } = JSON.parse(body);
     
     let query;
     let queryParams: any[] = [];
